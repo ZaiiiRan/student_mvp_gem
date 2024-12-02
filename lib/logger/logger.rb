@@ -1,7 +1,7 @@
 require 'logger'
 
 class App_logger
-  LOG_FILE_PATH = File.expand_path('../../log/app.log', __FILE__)
+  LOG_FILE_PATH = File.expand_path(ENV[LOG_FILE_PATH], __FILE__)
   private_class_method :new
 
   def initialize
