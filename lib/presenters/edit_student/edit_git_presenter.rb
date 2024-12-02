@@ -1,5 +1,5 @@
 require_relative '../../models/student/student.rb'
-require_relative './edit_contacts_presenter'
+require_relative './edit_student_presenter'
 
 # == Edit_git_presenter
 # Презентер для редактирования информации о GitHub аккаунте студента.

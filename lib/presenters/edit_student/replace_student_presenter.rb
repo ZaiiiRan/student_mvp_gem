@@ -1,6 +1,6 @@
 require 'date'
 require_relative '../../models/student/student.rb'
-require_relative './edit_contacts_presenter'
+require_relative './edit_student_presenter'
 
 # == Replace_student_presenter
 # Презентер для замены информации о студенте.
