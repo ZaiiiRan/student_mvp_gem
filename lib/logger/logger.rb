@@ -1,19 +1,18 @@
 require 'logger'
 
 class App_logger
-  LOG_FILE_PATH = File.expand_path(ENV[LOG_FILE_PATH], __FILE__)
   private_class_method :new
 
-  def initialize
+  def initialize(file_path)
     ensure_log_directory
-    self.logger = Logger.new(LOG_FILE_PATH)
+    self.logger = Logger.new(file_path)
     self.logger.formatter = proc do |severity, datetime, progname, msg|
       "[#{datetime}] #{severity}: #{msg}\n"
     end
     setup_log_level
   end
 
-  def self.instance
+  def self.instance(file_path = nil)
     @instance ||= new
   end
 
