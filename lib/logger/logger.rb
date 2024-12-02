@@ -13,7 +13,7 @@ class App_logger
   end
 
   def self.instance(file_path = nil)
-    @instance ||= new
+    @instance ||= new(file_path)
   end
 
   def log(severity, message)
