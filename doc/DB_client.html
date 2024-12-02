@@ -9,7 +9,7 @@
 
   <meta name="keywords" content="ruby,class,DB_client">
 
-    <meta name="description" content="Documentation for the DB_client class">
+    <meta name="description" content="class DB_client: == DB_client Клиент базы данных MySQL">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -108,6 +108,10 @@
 
   <section class="description">
     
+<h2 id="class-DB_client-label-DB_client"><a href="DB_client.html"><code>DB_client</code></a><span><a href="#class-DB_client-label-DB_client">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Клиент базы данных MySQL</p>
+
   </section>
 
   <section id="5Buntitled-5D" class="documentation-section anchor-link">
@@ -139,12 +143,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="instance-source">
-            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 11</span>
+            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">instance</span>(<span class="ruby-identifier">db_config</span> = <span class="ruby-keyword">nil</span>)
     <span class="ruby-ivar">@instance</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">new</span>(<span class="ruby-identifier">db_config</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Получение или создание объекта клиента базы данных. Конфигурацию БД достаточно задать 1 раз.</p>
+
+<p>@param [Hash] db_config - конфигурация базы данных. @raise [Error] Не указана конфигурация базы данных. @return [Mysql2::Client] - объект клиента базы данных.</p>
         </div>
 
 
@@ -168,13 +174,15 @@
 
         <div class="method-description">
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">db_config</span>)
-    <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;Database configuration is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">db_config</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;Не указана конфигурация базы данных&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">db_config</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">client</span> = <span class="ruby-constant">Mysql2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">db_config</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Инициализация объекта класса БД.</p>
+
+<p>@param [Hash] db_config - конфигурация базы данных. @raise [Error] Не указана конфигурация базы данных.</p>
         </div>
 
 
@@ -205,12 +213,12 @@
 
         <div class="method-description">
           <div class="method-source-code" id="close-source">
-            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 19</span>
+            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">close</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">client</span>.<span class="ruby-identifier">close</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Закрытие объекта клиента базы данных.</p>
         </div>
 
 
@@ -234,12 +242,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="query-source">
-            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 15</span>
+            <pre><span class="ruby-comment"># File lib/data_access/DB_client/DB_client.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">query</span>(<span class="ruby-identifier">query</span>, <span class="ruby-identifier">params</span>=[])
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">client</span>.<span class="ruby-identifier">prepare</span>(<span class="ruby-identifier">query</span>).<span class="ruby-identifier">execute</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Выполнение SQL запроса.</p>
+
+<p>@param [String] query - SQL запрос. @param [Array] params - массив параметров для SQL запроса (необязательно) @return [Mysql2::Hash] - результат выполнения запроса.</p>
         </div>
 
 

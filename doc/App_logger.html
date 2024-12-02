@@ -9,7 +9,7 @@
 
   <meta name="keywords" content="ruby,class,App_logger">
 
-    <meta name="description" content="Documentation for the App_logger class">
+    <meta name="description" content="class App_logger: == App_logger Логгер приложения">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -112,21 +112,15 @@
 
   <section class="description">
     
+<h2 id="class-App_logger-label-App_logger"><a href="App_logger.html"><code>App_logger</code></a><span><a href="#class-App_logger-label-App_logger">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Логгер приложения</p>
+
   </section>
 
   <section id="5Buntitled-5D" class="documentation-section anchor-link">
 
 
-    <section class="constants-list">
-      <header>
-        <h3>Constants</h3>
-      </header>
-      <dl>
-        <dt id="LOG_FILE_PATH">LOG_FILE_PATH
-        <dd>
-          
-      </dl>
-    </section>
 
 
 
@@ -140,7 +134,7 @@
             <div class="method-heading">
               <a href="#method-c-instance" title="Link to this method">
                 <span class="method-name">instance</span>
-                <span class="method-args">()</span>
+                <span class="method-args">(file_path = nil)</span>
               </a>
             </div>
         </div>
@@ -153,12 +147,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="instance-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 16</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">instance</span>
-  <span class="ruby-ivar">@instance</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">new</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">instance</span>(<span class="ruby-identifier">file_path</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@instance</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">new</span>(<span class="ruby-identifier">file_path</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Получение или создание объекта логгера Путь задать достаточно всего один раз. Если он не задан перед первым использованием логгера, то выбрасывается исключение.</p>
+
+<p>@param [String, nil] file_path - путь к файлу логов. @raise [Error] Не указан путь к файлу логов. @return [App_logger] - объект логгера.</p>
         </div>
 
 
@@ -169,7 +165,7 @@
             <div class="method-heading">
               <a href="#method-c-new" title="Link to this method">
                 <span class="method-name">new</span>
-                <span class="method-args">()</span>
+                <span class="method-args">(file_path)</span>
               </a>
             </div>
         </div>
@@ -182,17 +178,23 @@
 
         <div class="method-description">
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 7</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">file_path</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">file_path</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">file_path</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span>, <span class="ruby-string">&#39;Не указан путь к файлу логов&#39;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">file_path</span> = <span class="ruby-identifier">file_path</span>
   <span class="ruby-identifier">ensure_log_directory</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-constant">Logger</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">LOG_FILE_PATH</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-constant">Logger</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">file_path</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">formatter</span> = <span class="ruby-identifier">proc</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">severity</span>, <span class="ruby-identifier">datetime</span>, <span class="ruby-identifier">progname</span>, <span class="ruby-identifier">msg</span><span class="ruby-operator">|</span>
     <span class="ruby-node">&quot;[#{datetime}] #{severity}: #{msg}\n&quot;</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">setup_log_level</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Инициализация объекта логгера.</p>
+
+<p>@param [String] file_path - путь к файлу логов. @raise [Error] Не указан путь к файлу логов.</p>
         </div>
 
 
@@ -223,12 +225,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="debug-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">debug</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-identifier">log</span>(<span class="ruby-value">:debug</span>, <span class="ruby-identifier">message</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Запись сообщения для дебага в лог</p>
+
+<p>@param [String] message - сообщение</p>
         </div>
 
 
@@ -252,12 +256,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="error-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 32</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">error</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-identifier">log</span>(<span class="ruby-value">:error</span>, <span class="ruby-identifier">message</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Запись сообщения ошибки в лог</p>
+
+<p>@param [String] message - сообщение</p>
         </div>
 
 
@@ -281,12 +287,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="fatal-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 40</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fatal</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-identifier">log</span>(<span class="ruby-value">:fatal</span>, <span class="ruby-identifier">message</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Запись сообщения фатальной ошибки в лог</p>
+
+<p>@param [String] message - сообщение</p>
         </div>
 
 
@@ -310,12 +318,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="info-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 24</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">info</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-identifier">log</span>(<span class="ruby-value">:info</span>, <span class="ruby-identifier">message</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Запись информационного сообщения в лог</p>
+
+<p>@param [String] message - сообщение</p>
         </div>
 
 
@@ -339,12 +349,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="log-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 20</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">log</span>(<span class="ruby-identifier">severity</span>, <span class="ruby-identifier">message</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">severity</span>, <span class="ruby-identifier">message</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Запись сообщения в лог</p>
+
+<p>@param [Symbol] severity - тип сообщения @param [String] message - сообщение</p>
         </div>
 
 
@@ -368,12 +380,14 @@
 
         <div class="method-description">
           <div class="method-source-code" id="warn-source">
-            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 36</span>
+            <pre><span class="ruby-comment"># File lib/logger/logger.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">warn</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-identifier">log</span>(<span class="ruby-value">:warn</span>, <span class="ruby-identifier">message</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+          <p>Запись сообщения предупреждения в лог</p>
+
+<p>@param [String] message - сообщение</p>
         </div>
 
 
