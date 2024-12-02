@@ -5,7 +5,8 @@ class App_logger
 
   def initialize(file_path)
     ensure_log_directory
-    self.logger = Logger.new(file_path)
+    self.file_path = file_path
+    self.logger = Logger.new(self.file_path)
     self.logger.formatter = proc do |severity, datetime, progname, msg|
       "[#{datetime}] #{severity}: #{msg}\n"
     end
@@ -41,10 +42,10 @@ class App_logger
   end
 
   private
-  attr_accessor :logger
+  attr_accessor :logger, :file_path
 
   def ensure_log_directory
-    log_directory = File.dirname(LOG_FILE_PATH)
+    log_directory = File.dirname(self.file_path)
     Dir.mkdir(log_directory) unless Dir.exist?(log_directory)
   end
 
