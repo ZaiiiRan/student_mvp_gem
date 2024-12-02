@@ -4,8 +4,8 @@ class App_logger
   private_class_method :new
 
   def initialize(file_path)
-    ensure_log_directory
     self.file_path = file_path
+    ensure_log_directory
     self.logger = Logger.new(self.file_path)
     self.logger.formatter = proc do |severity, datetime, progname, msg|
       "[#{datetime}] #{severity}: #{msg}\n"
