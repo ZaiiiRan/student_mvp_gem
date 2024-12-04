@@ -55,7 +55,7 @@ class Student_list_presenter < Base_presenter
     begin
       self.logger.info "Поиск студентов в хранилище"
       self.data_list = self.entities_list.get_k_n_student_short_list(self.view.current_page, self.view.rows_per_page, self.filters, self.data_list)
-      self.data_list.count = self.entities_list.get_student_short_count
+      self.data_list.count = self.entities_list.get_student_short_count(self.filters)
       self.view.update_view({ columns: self.data_list.get_names, total_count: self.data_list.count, table_data: self.data_list.retrieve_data })
     rescue => e
       error_msg = "Ошибка при получении данных: #{e.message}"
